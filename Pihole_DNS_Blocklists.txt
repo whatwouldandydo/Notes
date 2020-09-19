@@ -22,3 +22,4 @@ https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt
 https://raw.githubusercontent.com/mhhakim/pihole-blocklist/master/porn.txt
 https://www.sunshine.it/blacklist.txt
 http://jasonhill.co.uk/pfsense/ad_servers_dnsbl.txt
+https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/youtubelist.txt

@@ -10,7 +10,6 @@ https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/cybercrime.ips
 https://raw.githubusercontent.com/firehol/blocklist-ipsets/master/firehol_level2.netset
 https://adaway.org/hosts.txt
 https://someonewhocares.org/hosts/hosts
-https://jasonhill.co.uk/pfsense/ytadblock.txt
 https://raw.githubusercontent.com/HenningVanRaumle/pihole-ytadblock/master/ytadblock.txt
 https://raw.githubusercontent.com/HenningVanRaumle/pihole-ytadblock/master/googlevideo.com%20domains/adverisment.txt
 https://www.malwaredomainlist.com/hostslist/hosts.txt
@@ -21,7 +20,6 @@ https://justdomains.github.io/blocklists/lists/easyprivacy-justdomains.txt
 https://justdomains.github.io/blocklists/lists/adguarddns-justdomains.txt
 https://justdomains.github.io/blocklists/lists/nocoin-justdomains.txt
 https://raw.githubusercontent.com/mhhakim/pihole-blocklist/master/porn.txt
-http://jasonhill.co.uk/pfsense/ad_servers_dnsbl.txt
 
 
 

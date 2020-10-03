@@ -28,5 +28,5 @@ http://jasonhill.co.uk/pfsense/ad_servers_dnsbl.txt
 
 # These URLs are temporary disabled due to blocking too many valid web traffics.
 
-https://raw.githubusercontent.com/kboghdady/youTube_ads_4_pi-hole/master/youtubelist.txt
+
 https://www.sunshine.it/blacklist.txt

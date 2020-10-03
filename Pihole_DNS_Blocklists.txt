@@ -27,6 +27,3 @@ http://jasonhill.co.uk/pfsense/ad_servers_dnsbl.txt
 
 
 # These URLs are temporary disabled due to blocking too many valid web traffics.
-
-
-https://www.sunshine.it/blacklist.txt

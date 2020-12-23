@@ -1,2 +1,0 @@
-osb-ussvc.samsungqbe.com
-lcprd1.samsungcloudsolution.net

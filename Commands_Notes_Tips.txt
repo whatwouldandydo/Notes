@@ -1,4 +1,4 @@
-######### Tips to use Python Netmiko #########
+################## Tips to use Python Netmiko ##################
 from netmiko import Netmiko
 
 my_devices_dict = {
@@ -38,3 +38,103 @@ logging.basicConfig(filename="test.log", level=logging.DEBUG)
 logger = logging.getLogger("netmiko")
 '''Turn on longging to troubleshoot issue from Netmiko. Use .write_channel("show version\n") and .read_channel() as your own operations.'''
 
+################## Jinja2 ##################
+Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output Files
+
+import jinja2
+'''Import jinja2 module'''
+
+{{variable_name}}
+'''Use {{}} to define a variable in Jinja2'''
+
+----------------- Example Code -----------------
+bgp_variables = {
+    "peer1_ip": "10.255.255.2",
+    "peer1_as": 20,
+    "advertised_route1": "10.10.200.0/24",
+    "advertised_route2": "10.10.201.0/24",
+    "advertised_route3": "10.10.202.0/24",
+}
+
+bgp_template = """
+router bgp 10
+ address-family ipv4 unicast
+ neighbor {{peer1_ip}} remote-as {{peer1_as}}
+ network {{advertised_route1}}
+ network {{advertised_route2}}
+ network {{advertised_route3}}
+"""
+
+t = jinja2.Template(bgp_template)   #<--- bgp_template can be an external Jinja2 file .j2 
+t2 = t.render(bgp_variables)    #<--- bgp_variables is a dictionary and can be external CSV or text file
+print(t2)
+------------------------------------------------
+
+{% for route in advertised_routes %}
+network {{route}}
+{% endfor %}
+'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2). The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
+
+----------------- Example Code -----------------
+advertised_routes = ["10.10.200.0/24", "10.10.201.0/24", "10.10.202.0/24"] #<--- Variable advertised_routes
+
+bgp_variables = {
+    "peer1_ip": "10.255.255.2",
+    "peer1_as": 20,
+    "advertised_routes" = advertised_routes,    #<--- Assigned value to variable advertised_routes
+}
+
+template_file = "nxos_bgp_template.j2"
+with open(template_file) as f:
+    bgp_template = f.read()
+
+''' print(bgp_template)
+router bgp 10
+ address-family ipv4 unicast
+ neighbor {{peer1_ip}} remote-as {{peer1_as}}
+ {%- for route in advertised_routes %}  #<--- Jinja2 for loop through advertised_routes value
+ network {{route}}  #<--- Apply each element from the for loop
+ {%- endfor %}  #<--- End for loop
+'''
+
+t = jinja2.Template(bgp_template)
+t2 = t.render(bgp_variables)
+------------------------------------------------
+
+{% if peer1_ipv6 %}
+command
+{% elif %}
+command
+{% else %}
+{% endif %}
+'''How to use conditionals If/Elif/Else in Jinja2. Make sure "peer1_ipv6" key is a boolen True or False'''
+
+----------------- Example Code -----------------
+advertised_routes = ["10.10.200.0/24", "10.10.201.0/24", "10.10.202.0/24"]
+
+bgp_variables = {
+    "peer1_ip": "10.255.255.2",
+    "peer1_as": 20,
+    "peer1_ipv6": True,
+    "advertised_routes" = advertised_routes,
+}
+
+bgp_variables = {
+    "peer1_ip": "10.255.255.2",
+    "peer1_as": 20,
+    "advertised_routes" = advertised_routes,
+}
+
+''' print(bgp_template)
+router bgp 10
+ address-family ipv4 unicast
+ neighbor {{peer1_ip}} remote-as {{peer1_as}}
+ {%- for route in advertised_routes %}
+ network {{route}}
+ {%- endfor %}
+ update-source loopback1
+ {% if peer1_ipv6 -%}               #<--- Conditional check in bgp_variables for peer1_ipv6 value
+ address-family ipv6 unicast        #<--- Execute the operation
+ {% endif %}                        #<--- End if statement
+'''
+------------------------------------------------

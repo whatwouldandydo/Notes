@@ -172,3 +172,50 @@ bgp_template = """
 """
 ------------------------------------------------
 
+################## YAML ##################
+YAML file (.yml) starts with ---
+
+---
+- 1.1.1.1
+- 2.2.2.2
+- 3.3.3.3
+'''This YAML file will return a List in Python and each element in the list is a String.'''
+
+---
+router1: 1.1.1.1
+router2: 2.2.2.2
+router3: 3.3.3.3
+router4: "No longer {}"
+router5: on
+router6: off
+router7: True
+router8: true
+router9: False
+router10: yes
+router11: 100
+'''This YAML file will return a Dictionary in Python. Each Key and Value in the dictionary is a String. Use " when you have special characters. on, off, True, true, False, yes, no are boolen. router11 will return as an Integer.'''
+
+---
+rtr1:
+  ip_addr: 10.1.1.1
+  username: admin
+  password: user input
+  device_type: cisco_ios
+  routing:
+    - Static
+    - OSPF
+    - BGP
+rtr2:
+  ip_addr: 10.1.1.2
+  username: admin
+  password: user input
+  device_type: juniper_junos
+'''Nested dictionary in YAML. rtr1's key routing will return a nested list.'''
+
+filename = "output.yml"
+with open(filename, "w") as f:
+    output1 = yaml.dump(from_py_dict, f)
+    output2 = yaml.dump(from_py_dict, f, default_flow_style=False)
+    output3 = yaml.dump(from_py_dict, f, default_flow_style=True)
+'''output1 will write to output.yml file as compress form. output2 will write as regular YAML format (easier to read). output3 will write as compress file like you would see in Python.'''
+

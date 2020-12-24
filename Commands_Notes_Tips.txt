@@ -219,3 +219,12 @@ with open(filename, "w") as f:
     output3 = yaml.dump(from_py_dict, f, default_flow_style=True)
 '''output1 will write to output.yml file as compress form. output2 will write as regular YAML format (easier to read). output3 will write as compress file like you would see in Python.'''
 
+################## JSON ##################
+json.dumps(dict, indent)
+'''dumps method convert a Python object into a JSON string.'''
+
+json.dump(dict, file_pointer, indent)
+'''dump method uses for writing to a JSON file'''
+
+json.load() vs json.loads()
+'''The s stands for string meaning the load the file contents as string.'''

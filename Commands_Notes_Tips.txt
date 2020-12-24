@@ -66,7 +66,7 @@ router bgp 10
 """
 
 t = jinja2.Template(bgp_template)   #<--- bgp_template can be an external Jinja2 file .j2 
-t2 = t.render(bgp_variables)    #<--- bgp_variables is a dictionary and can be external CSV or text file
+t2 = t.render(bgp_variables)        #<--- bgp_variables is a dictionary and can be external CSV or text file
 print(t2)
 ------------------------------------------------
 
@@ -93,8 +93,8 @@ router bgp 10
  address-family ipv4 unicast
  neighbor {{peer1_ip}} remote-as {{peer1_as}}
  {%- for route in advertised_routes %}  #<--- Jinja2 for loop through advertised_routes value
- network {{route}}  #<--- Apply each element from the for loop
- {%- endfor %}  #<--- End for loop
+ network {{route}}                      #<--- Apply each element from the for loop
+ {%- endfor %}                          #<--- End for loop
 '''
 
 t = jinja2.Template(bgp_template)
@@ -119,12 +119,6 @@ bgp_variables = {
     "advertised_routes" = advertised_routes,
 }
 
-bgp_variables = {
-    "peer1_ip": "10.255.255.2",
-    "peer1_as": 20,
-    "advertised_routes" = advertised_routes,
-}
-
 ''' print(bgp_template)
 router bgp 10
  address-family ipv4 unicast
@@ -138,3 +132,43 @@ router bgp 10
  {% endif %}                        #<--- End if statement
 '''
 ------------------------------------------------
+
+{% for router_name, ip_addr in router.items() %}
+{{ router_name }} >>> {{ip_addr}}
+    {% if ipv4 %}
+    address-family ipv4 unicast
+    {% end if %}
+{% endfor %}
+'''You can use Dictionary with nested variables. Jinja2 template allows nested loops'''
+
+----------------- Example Code -----------------
+bgp_variables = {
+    "routers": {
+        "r1": "10.10.10.1",
+        "r2": "10.10.10.2",
+        "r3": "10.10.10.3",
+    },
+    "ip_list": [
+        "1.1.1.1",
+        "10.1.1.1",
+        "192.168.1.1"
+    ],
+    "ipv4": True,
+    "ipv6": False,
+}
+
+bgp_template = """
+{% for router_name, ip_addr in router.items() %}
+{{ router_name }} >>> {{ip_addr}}
+    {% for ip in ip_list %}
+    {{ ip }}
+    {% endfor %}
+    {% if ipv4 %}
+    address-family ipv4 unicast
+    {% elif ipv6 %}
+    address-family ipv6 multicast
+    {% end if %}
+{% endfor %}
+"""
+------------------------------------------------
+

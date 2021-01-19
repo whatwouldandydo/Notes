@@ -1,12 +1,18 @@
 ################## Tips to use Python Netmiko ##################
 from netmiko import Netmiko
 
+device_type="cisco_ios"
+'''device_type uses Vendor_OS_Transport. Example: "cisco_ios_serial" '''
+
+session_log="router_session_log.txt"
+'''Save the device output session log to file name, router_session_log.txt'''
+
 my_devices_dict = {
     "host": "router_name",
     "username": "User ID",
     "password": "device password"
     "device_type": "cisco_nxos", #Use dir(netmiko) to find supported vendors.
-    "global_delay_factor": 5 #Use global_delay_factor to set delay (in second) at the global level.
+    "global_delay_factor": 5, #Use global_delay_factor to set delay (in second) at the global level.
 }
 
 net_connect = Netmiko(**my_devices_dict)

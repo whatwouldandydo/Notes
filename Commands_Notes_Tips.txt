@@ -25,7 +25,7 @@ output = net_connect.send_command("write mem", delay_factor=5)
 '''Use delay_factor in seconds for timing of the commands that take longer than 1 second to run.'''
 
 output = net_connect.send_command_timing("clear ip arp")
-'''Use send_command_timing() for commands that require additional user input.'''
+'''Use send_command_timing() for commands that require additional user input such as delete command. send_command_timing will wait for 2 additional seconds once there is no new data available. This is using delay_factor of 1. delay_factor=2 will double this, delay_factor=4 will quadruple.'''
 
 output = net_connect.send_command("show ip route", use_textfsm=True)
 '''Export the show ip route output to TextFSM template (list). To use TextFSM, (1) Git clone ntc-templates from Github, (2) Make sure the Python program is in the same directory as ntc-templates for it to work. (3) Check ntc-templates index.txt file for supported show commands.'''

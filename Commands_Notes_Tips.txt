@@ -21,8 +21,8 @@ net_connect = Netmiko(**my_devices_dict)
 output = net_connect.send_command("show", expect_string=r"")
 '''Use the expect_string argument when the router/device gives a different trailing ouput.'''
 
-output = net_connect.send_command("write mem", delay_factor=5)
-'''Use delay_factor in seconds for timing of the commands that take longer than 1 second to run.'''
+output = net_connect.send_command("write mem", delay_factor=4, max_loops=1000)
+'''Use delay_factor for timing of the commands that take longer than 5 seconds to run. delay_factor=4 means quadrupble the delays. By default send_command/second_command_expect wait for about 90 seconds (delay_factor=1). Do not use delay_factor beyond 10. max_loops is the number of iterations before the method gives out an error (default is 500).'''
 
 output = net_connect.send_command_timing("clear ip arp")
 '''Use send_command_timing() for commands that require additional user input such as delete command. send_command_timing will wait for 2 additional seconds once there is no new data available. This is using delay_factor of 1. delay_factor=2 will double this, delay_factor=4 will quadruple.'''

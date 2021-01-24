@@ -50,6 +50,15 @@ export NET_TEXTFSM=/path/ntc-templates/templates
 output = net_connect.send_command("show ip int brie", user_textfsm=True)
 """Use TextFSM as structured data for the 'show ip int brie' output."""
 
+transfer_dict = netmiko.file_transfer(
+    net_connect, #Your SSH connect to the network device
+    source_file="test1.txt",
+    dest_file="test2.txt", #You can rename the file at the destination
+    direction="put", # "get"
+    overwrite_file=True
+)
+"""You can use file_transfer for SCP (Secure Copy). If the destination file already existed and MD5 hash matches, file_transfer won't run. Limited supported for vendor. May not work with large file such as images."""
+
 ################## Jinja2 ##################
 Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output Files
 

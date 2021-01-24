@@ -36,13 +36,19 @@ output = net_connect.send_config_set(commands)
 output = net_connect.commit()
 '''Use net_connect.commit() after the send_config_set() to save router configuration. Use case fo Juniper, NXOS.'''
 
-output = net_connect.send_config_from_file("commands.txt")
+output = net_connect.send_config_from_file(config_file="commands.txt")
 '''Use the commands from the file.'''
 
 import logging
 logging.basicConfig(filename="test.log", level=logging.DEBUG)
 logger = logging.getLogger("netmiko")
 '''Turn on longging to troubleshoot issue from Netmiko. Use .write_channel("show version\n") and .read_channel() as your own operations.'''
+
+export NET_TEXTFSM=/path/ntc-templates/templates
+"""TextFSM put the network devices' output to structured data such as list, dictionary, etc ... By default TextFSM look for the /templates/index file in /home directory. Use export NET_TEXTFSM when the ntc-templates directory is different. If TextFSM cannot correlate the template, it returns the ouput to string."""
+
+output = net_connect.send_command("show ip int brie", user_textfsm=True)
+"""Use TextFSM as structured data for the 'show ip int brie' output."""
 
 ################## Jinja2 ##################
 Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output Files

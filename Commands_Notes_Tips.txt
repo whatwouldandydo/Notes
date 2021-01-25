@@ -33,8 +33,8 @@ output = net_connect.send_command("show ip route", use_textfsm=True)
 output = net_connect.send_config_set(commands)
 '''Use send_config_set() to send 1 string command or a list of commands. send_config_set will ouput the commands that you entered.'''
 
-output = net_connect.commit()
-'''Use net_connect.commit() after the send_config_set() to save router configuration. Use case fo Juniper, NXOS.'''
+save_cfg = net_connect.save_config()
+'''Use save_config() after the send_config_set() to save router configuration. Use case fo Juniper, NXOS.'''
 
 output = net_connect.send_config_from_file(config_file="commands.txt")
 '''Use the commands from the file.'''
@@ -58,6 +58,15 @@ transfer_dict = netmiko.file_transfer(
     overwrite_file=True
 )
 """You can use file_transfer for SCP (Secure Copy). If the destination file already existed and MD5 hash matches, file_transfer won't run. Limited supported for vendor. May not work with large file such as images."""
+
+device1 = {
+    "host": "cisco1",
+    "device_type": "cisco_ios",
+    "username": username,
+    "use_keys": True, # Use SSH or RSA key for the user
+    "key_file": "/path/test_rsa" #Location of the key
+}
+"""You can use SSH or RSA keys for user authentication."""
 
 ################## Jinja2 ##################
 Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output Files

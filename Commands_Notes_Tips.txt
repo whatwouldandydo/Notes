@@ -33,11 +33,12 @@ output = net_connect.send_command("show ip route", use_textfsm=True)
 output = net_connect.send_config_set(commands)
 '''Use send_config_set() to send 1 string command or a list of commands. send_config_set will ouput the commands that you entered.'''
 
-save_cfg = net_connect.save_config()
-'''Use save_config() after the send_config_set() to save router configuration. Use case fo Juniper, NXOS.'''
-
 output = net_connect.send_config_from_file(config_file="commands.txt")
 '''Use the commands from the file.'''
+
+output = net_connect.commit()
+save_cfg = net_connect.save_config()
+'''Use save_config() after the send_config_set() to save router configuration. Use commit() for Juniper, NXOS.'''
 
 import logging
 logging.basicConfig(filename="test.log", level=logging.DEBUG)

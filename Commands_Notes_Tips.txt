@@ -48,7 +48,7 @@ logger = logging.getLogger("netmiko")
 export NET_TEXTFSM=/path/ntc-templates/templates
 """TextFSM put the network devices' output to structured data such as list, dictionary, etc ... By default TextFSM look for the /templates/index file in /home directory. Use export NET_TEXTFSM when the ntc-templates directory is different. If TextFSM cannot correlate the template, it returns the ouput to string."""
 
-output = net_connect.send_command("show ip int brie", user_textfsm=True)
+output = net_connect.send_command("show ip int brie", use_textfsm=True)
 """Use TextFSM as structured data for the 'show ip int brie' output."""
 
 transfer_dict = netmiko.file_transfer(

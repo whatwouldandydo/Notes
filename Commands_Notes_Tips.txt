@@ -1,5 +1,9 @@
 ################## Tips to use Python Netmiko ##################
+ipython -i test.py
+'''Use ipython to run the Python file to get interactive mode such as dir(), help(), print() in the code itself.'''
+
 from netmiko import Netmiko
+'''From libary netmiko import class Netmiko'''
 
 device_type="cisco_ios"
 '''device_type uses Vendor_OS_Transport. Example: "cisco_ios_serial" '''
@@ -259,3 +263,30 @@ json.dump(dict, file_pointer, indent)
 
 json.load() vs json.loads()
 '''The s stands for string meaning the load the file contents as string.'''
+
+Don't put comma , at the end of the JSON or it will generate error
+
+################## CiscoConfParse ##################
+from ciscoconfparse import CiscoConfParse
+'''From libary ciscoconfparse import class CiscoConfParse'''
+
+cisco_obj = CiscoConfParse("cisco1.txt")
+cisco_obj = cisco_obj.splitlines()
+'''Must convert the cisco1.txt from string to list datastructure for CiscoConfParse to read. Use splitlines() to convert string into list.'''
+
+cisco_obj.find_objects(r"^interface")
+'''Find anything begining a line with interface.'''
+
+cisco_obj.text
+'''Look at the text of cisco_obj variable.'''
+
+cisco_obj.children
+'''Look at the childrend of cisco_obj variable.'''
+
+cisco_obj.is_parent #Check if the cisco_obj is a is_parent
+cisco_obj.is_child  #Check if the cisco_obj is a children
+cisco_obj.siblings  #Check if the cisco_obj has any other objects
+
+match = cisco_obj.find_objects(r"^crypto map CRYPTO")
+match.re_search_children(r"set transform-set ")
+'''Use re_search_children to search for objects inside the parent.'''

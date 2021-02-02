@@ -1,5 +1,5 @@
 ################## How to Handle Complex Data Structures ##################
-Peeling the data from outer step by step
+Peeling the data back layer by layer from the outer to the inner.
 
 Is it a List or a Dictionary? Use type() to identify the data type.
 
@@ -9,7 +9,7 @@ List:
     3. If len() is multiple elements, use the for loop with 'break' to see the first entry
 
 Dictionary:
-    1. When it's Dictionary nested inside a List, remove the dictionary from inside the list by creating a new variable to get the first element from the list.
+    1. If it's Dictionary nested inside a List, remove the dictionary from inside the list by creating a new variable to get the first element from the list.
         data1 = data_list[0]
     2. Look at the keys()
         print(data1.keys())

@@ -1,3 +1,30 @@
+################## How to Handle Complex Data Structures ##################
+Peeling the data from outer step by step
+
+Is it a List or a Dictionary? Use type() to identify the data type.
+
+List:
+    1. Look at the length len() of the list
+    2. If len() = 1, just grap the first entry e.i. data_list[0]
+    3. If len() is multiple elements, use the for loop with 'break' to see the first entry
+
+Dictionary:
+    1. When it's Dictionary nested inside a List, remove the dictionary from inside the list by creating a new variable to get the first element from the list.
+        data1 = data_list[0]
+    2. Look at the keys()
+        print(data1.keys())
+    3. Look at each key name to find the information that you wanted
+        print(data1["key_name"])
+    4. Once you find the information from the key name, create a new variable for that key name
+        data2 = data1["key_name"]
+    5. When it's a nested dictionary (dictionaries inside a dictionary), repeat Step #2-4 until you find the information you wanted
+    6. Create a for loop with dictionary .items()
+
+        for key_name, val_name in data2.items():
+            print(key_name)
+            print(val_name["nested_key_name"])
+            break
+
 ################## Tips to use Python Netmiko ##################
 ipython -i test.py
 '''Use ipython to run the Python file to get interactive mode such as dir(), help(), print() in the code itself.'''

@@ -316,4 +316,11 @@ cisco_obj.siblings  #Check if the cisco_obj has any other objects
 
 match = cisco_obj.find_objects(r"^crypto map CRYPTO")
 match.re_search_children(r"set transform-set ")
-'''Use re_search_children to search for objects inside the parent.'''
+match2 = match[0].text
+'''Use re_search_children to search for objects inside the parent. Match2 is to view the data as clear text.'''
+
+dir(CiscoConfParse)
+"""Use dir() to view options for finding object such as find_objects(), find_objects_w_child(), etc..."""
+
+help(CiscoConfParse.find_objects_w_child())
+"""To see example commands and help options.""""

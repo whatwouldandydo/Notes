@@ -324,3 +324,16 @@ dir(CiscoConfParse)
 
 help(CiscoConfParse.find_objects_w_child())
 """To see example commands and help options.""""
+
+################## Using Pip ##################
+pip list
+pip3 list
+"""List all the packages that you installed."""
+
+pip freeze > requirements.txt
+pip3 freeze > requirements.txt
+"""Very useful when recreating an environment by exporting all the installed packages to a file."""
+
+pip install -r requirements.txt
+pip3 install -r requirements.txt
+"""Install the pacages from the requirements.txt file."""

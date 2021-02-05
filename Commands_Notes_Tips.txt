@@ -337,3 +337,21 @@ pip3 freeze > requirements.txt
 pip install -r requirements.txt
 pip3 install -r requirements.txt
 """Install the pacages from the requirements.txt file."""
+
+################## Using Python sys.path ##################
+To find out where the Python libaries are imported from.
+
+import sys
+from pprint import pprint
+pprint(sys.path)
+"""Use pprint(sys.path) to view all the paths Python is going to search."""
+
+import re
+print(re.__file__)
+"""Use print(.__file__) to find which directory the re libary is used.""""
+
+env | grep PYTHON
+"""To view the current Python path (PYTHONPATH)."""
+
+export PYTHONPATH=/home/newpath
+"""How to set a new python path to /home/newpath."""

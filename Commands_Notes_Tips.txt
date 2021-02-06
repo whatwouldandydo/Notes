@@ -355,3 +355,60 @@ env | grep PYTHON
 
 export PYTHONPATH=/home/newpath
 """How to set a new python path to /home/newpath."""
+
+################## Using TextFSM ##################
+pip install textfsm
+pip install colorama
+"""Install TextFSM package. Install Colorama for easier to read"""
+
+textfsm.__file__
+"""Find the textfsp.py file location"""
+
+#Output from show_ip_int_brief.txt file
+"""
+SW1#show ip interface brief
+Interface              IP-Address      OK? Method Status                Protocol
+Vlan1                  unassigned      YES NVRAM  administratively down down
+FastEthernet0          192.168.1.1     YES NVRAM  down                  down
+GigabitEthernet1/0/1   unassigned      YES unset  down                  down
+GigabitEthernet1/0/2   unassigned      YES unset  up                    up
+GigabitEthernet1/0/3   unassigned      YES unset  administratively down down
+GigabitEthernet1/0/4   unassigned      YES unset  administratively down down
+GigabitEthernet1/0/5   unassigned      YES unset  administratively down down
+GigabitEthernet1/0/6   unassigned      YES unset  up                    up
+GigabitEthernet1/0/7   unassigned      YES unset  up                    up
+GigabitEthernet1/0/8   unassigned      YES unset  administratively down down
+SW1#
+"""
+
+#Code in file name show_ip_int_brief.template
+#Define your fields to extract. It will extract the data as Column.
+# Value VAR_NAME (regex_pattern)
+
+Value INTERFACE (^\S+)
+"""(1) create variable name INTERFACE (2) match begining of the line ^ (3) non-whitespace value \S (4) match one or more times + (6) This will catch Gig0/1 or Gi1/0/1."""
+
+Value IP_ADDR (\S+)
+"""Match the IP-Address column. Notice not using begining of the line ^"""
+
+
+#Start of the FSM
+Start
+  ^Interface.*Protocol\s$$ -> ShowIPIntBrief
+"""Remove the header row 'Interface  IP-Address  OK? Method Status  Protocol'
+  (1) begining of the ^ (2) match Interface (3) any character after the Interface .
+  (4) zero or more time * (5) match Protocol (6) any whitespace \s
+  (7) end of the line $ must use $$ of TextFSM (8) then transition to ShowIPIntBrief state."""
+
+ShowIPIntBrief
+  ^${INTERFACE}\s+${IP_ADDR}\s -> Record
+"""In the ShowIPIntBrief state (1) match begining of the line ^ variable ${INTERFACE} whitespace \s and one or more times + (2) match variable ${IP_ADDR}) whitespace \s and one or more times
+(3) then start the Record operation."""
+
+
+#Implicit OEF and Record
+EOF
+
+#Run TestFSM script
+# textfsm.py <your_template_file> <your_output_text_file>
+textfsm.py show_ip_int_brief.template show_ip_int_brief.txt

@@ -391,6 +391,10 @@ Value INTERFACE (^\S+)
 Value IP_ADDR (\S+)
 """Match the IP-Address column. Notice not using begining of the line ^"""
 
+Value LINE_STATUS (up|down)
+Value LINE_PROTOCOL (up|down)
+"""Match up or down"""
+
 
 #Start of the FSM
 Start
@@ -401,9 +405,11 @@ Start
   (7) end of the line $ must use $$ of TextFSM (8) then transition to ShowIPIntBrief state."""
 
 ShowIPIntBrief
-  ^${INTERFACE}\s+${IP_ADDR}\s -> Record
-"""In the ShowIPIntBrief state (1) match begining of the line ^ variable ${INTERFACE} whitespace \s and one or more times + (2) match variable ${IP_ADDR}) whitespace \s and one or more times
-(3) then start the Record operation."""
+  ^${INTERFACE}\s+${IP_ADDR}.*${LINE_STATUS}\s+${LINE_PROTOCOL}\s*$$ -> Record
+"""In the ShowIPIntBrief state (1) match begining of the line ^ variable ${INTERFACE} whitespace \s and one or more times + (2) match variable ${IP_ADDR}) whitespace \s and one or more times +
+(3) match variable ${LINE_STATUS} whitespace \s and one or more times +
+(4) match variable ${LINE_PROTOCOL} whitespace \s zero or more times * and end of line $$
+(5) then start the Record operation."""
 
 
 #Implicit OEF and Record

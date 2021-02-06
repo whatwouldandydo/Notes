@@ -6,7 +6,7 @@ re.search(r"..", "10.220.100.1") matches "10"
 re.search(r"...", "10.220.100.1") matches "10."
 re.search(r".", "") No match because there is nothing in the searched "" string
 
-+	Whatever comes before the + character, matches ONE or MORE times.
++	Matches ONE or MORE times. Whatever comes before the + character.
 re.search(r".+", "10.220.100.1") matches the entire "10.220.100.1" because there is something (1) before the + character, be greedy and matches as many time as you can.
 
 *	Matches ZERO or MORE times

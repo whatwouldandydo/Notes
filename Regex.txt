@@ -36,6 +36,7 @@ re.search(r"^\s+\S+", "  10.220.100.1     ") matches "  10.200.10.1" and won't m
 []	Construct your own character class
 re.search(r"^\s+[\d\.]", "  10.220.100.1     ") matches "  1" the leading whitespaces and a single digit
 re.search(r"^\s+[\d\.]+", "  10.220.100.1     ") matches "  10.220.100.1" the leading whitespaces and all the digits but not the trailing whitespaces.
+re.search(r"[*>]+", "*>") matches inside the [] for * or > symbols and anything after the symbol.
 
 ()	Parenthsis to save things
 re.search(r"^\s(\S+)", "  10.220.100.1     ") matches "  10.220.100.1"

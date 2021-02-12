@@ -46,3 +46,10 @@ re.search(r"^\s(\S+)", "  10.220.100.1     ").group(1) matches "10.220.100.1". G
 re.search(r"^Process (.*)$", output, flags=re.M) use the flags=re.M to search line by line. By default .* only match only on the first line and doesn't match over the new lines.
 re.search(r"^Process (.*)$", output, flags=re.DOTALL) .* now matches the beginning (^) and every line all the way to the end of the file.
 flags=re.I means ignore capitalization
+
+re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", "10.220.88.11") for matching IP addresses
+\d = digit
+{1,3} = the digit can be there once or upto three times
+\. = Must backblack the period because the period is a special character
+
+re.search(r"[0-9\.]+", "10.220.88.11") shorter version for matching IP addresses

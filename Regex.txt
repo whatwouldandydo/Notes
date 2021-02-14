@@ -53,3 +53,10 @@ re.search(r"(\d{1,3}\.\d{1,3}\.\d{1,3}\.\d{1,3})", "10.220.88.11") for matching 
 \. = Must backblack the period because the period is a special character
 
 re.search(r"[0-9\.]+", "10.220.88.11") shorter version for matching IP addresses
+
+\D matches Non-Digit character such as letters
+
+\W matches a whole word
+
+\w matches characters from a-z, A-Z, digits from 0-9, and the underscore _ character
+

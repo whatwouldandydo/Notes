@@ -109,6 +109,9 @@ import jinja2
 {{variable_name}}
 '''Use {{}} to define a variable in Jinja2'''
 
+# Jinja2 Comment
+{# This will show (Jinja2 Comment) #}
+
 {% if peer1_ipv6 %}
 command
 {% elif %}
@@ -117,10 +120,18 @@ command
 {% endif %}
 '''How to use conditionals If/Elif/Else in Jinja2. Make sure "peer1_ipv6" key is a boolen True or False'''
 
+{% for port in range(25) -%}
+interface Gig0/1/{{ port }}
+ switchport mode access
+ switchport access vlan 2021
+!
+{%- endfor %}
+'''How to use the for loop in Jinja2. The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
+
 {% for route in advertised_routes -%}
 network {{route}}
 {%- endfor %}
-'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2). The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
+'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2).
 
 ----------------- Jinja2 Environment -----------------
 """Use FileSystemLoader to specify where you want to load the template file."""

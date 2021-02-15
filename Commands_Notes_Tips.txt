@@ -109,6 +109,43 @@ import jinja2
 {{variable_name}}
 '''Use {{}} to define a variable in Jinja2'''
 
+{% if peer1_ipv6 %}
+command
+{% elif %}
+command
+{% else %}
+{% endif %}
+'''How to use conditionals If/Elif/Else in Jinja2. Make sure "peer1_ipv6" key is a boolen True or False'''
+
+{% for route in advertised_routes -%}
+network {{route}}
+{%- endfor %}
+'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2). The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
+
+----------------- Jinja2 Environment -----------------
+"""Use FileSystemLoader to specify where you want to load the template file."""
+"""Use StrictUndefined to generate exception error when Variables are not define. By the default, Jinja2 won't generate error for undefine variables."""
+from jinja2 import FileSystemLoader, StrictUndefined
+from jinja2.environment import Environment
+
+env = Environment(undefined=StrictUndefined)
+#Use Environment object to generate error for undefine variables.
+
+env.loader = FileSystemLoader([".", "~/home/", "~/Documents/"])
+#Use Environment object to load a file from multiple directories.
+
+bgp_variables = {
+    "peer1_ip": "10.255.255.2",
+    "peer1_as": 20,
+    "advertised_route1": "10.10.200.0/24",
+    "advertised_route2": "10.10.201.0/24",
+    "advertised_route3": "10.10.202.0/24",
+}
+
+template_file = "bgp_config.j2"
+template = env.get_template(template_file)
+output = template.render(**bgp_variables)
+
 ----------------- Example Code -----------------
 bgp_variables = {
     "peer1_ip": "10.255.255.2",
@@ -128,14 +165,8 @@ router bgp 10
 """
 
 t = jinja2.Template(bgp_template)   #<--- bgp_template can be an external Jinja2 file .j2 
-t2 = t.render(bgp_variables)        #<--- bgp_variables is a dictionary and can be external CSV or text file
+t2 = t.render(**bgp_variables)      #<--- bgp_variables is a dictionary and can be external CSV or text file
 print(t2)
-------------------------------------------------
-
-{% for route in advertised_routes %}
-network {{route}}
-{% endfor %}
-'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2). The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
 
 ----------------- Example Code -----------------
 advertised_routes = ["10.10.200.0/24", "10.10.201.0/24", "10.10.202.0/24"] #<--- Variable advertised_routes
@@ -160,16 +191,7 @@ router bgp 10
 '''
 
 t = jinja2.Template(bgp_template)
-t2 = t.render(bgp_variables)
-------------------------------------------------
-
-{% if peer1_ipv6 %}
-command
-{% elif %}
-command
-{% else %}
-{% endif %}
-'''How to use conditionals If/Elif/Else in Jinja2. Make sure "peer1_ipv6" key is a boolen True or False'''
+t2 = t.render(**bgp_variables)
 
 ----------------- Example Code -----------------
 advertised_routes = ["10.10.200.0/24", "10.10.201.0/24", "10.10.202.0/24"]

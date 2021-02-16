@@ -106,8 +106,17 @@ Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output
 import jinja2
 '''Import jinja2 module'''
 
-{{variable_name}}
-'''Use {{}} to define a variable in Jinja2'''
+{{% set var1 = "Hello" %}}
+"""Use % when set variable."""
+
+{{ variable_name }}
+'''Use {{}} to define a variable in Jinja2. Don't use % when the variable already defined.'''
+
+{{% set var1 = "cisco" %}} #Notice the %
+{{% set var2 = 123 %}}
+{{% set var3 = [var1, var2] %}}
+{{ var3 | length }} #Find list length. No % in used.
+{{ var1 | capitalize }} #Capitalize Cisco
 
 # Jinja2 Comment
 {# This will show (Jinja2 Comment) #}

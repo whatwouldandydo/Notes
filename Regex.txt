@@ -38,7 +38,7 @@ re.search(r"^\s+[\d\.]", "  10.220.100.1     ") matches "  1" the leading whites
 re.search(r"^\s+[\d\.]+", "  10.220.100.1     ") matches "  10.220.100.1" the leading whitespaces and all the digits but not the trailing whitespaces.
 re.search(r"[*>]+", "*>") matches inside the [] for * or > symbols and anything after the symbol.
 
-()	Parenthsis to save things
+()	Caputer and group by parenthsis to save things
 re.search(r"^\s(\S+)", "  10.220.100.1     ") matches "  10.220.100.1"
 re.search(r"^\s(\S+)", "  10.220.100.1     ").group(0) matches "  10.220.100.1". Group 0 is the entire match which is outside the parenthsis and inside the parenthsis
 re.search(r"^\s(\S+)", "  10.220.100.1     ").group(1) matches "10.220.100.1". Group 1 is what in the first parenthsis. Group 2 is the sencond parenthsis. Group 3 is the third parenthsis and so on.

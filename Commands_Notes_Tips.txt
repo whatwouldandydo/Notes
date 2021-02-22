@@ -139,8 +139,11 @@ interface Gig0/1/{{ port }}
 
 ----------------- For loop with If statement -----------------
 vrf_template = """
-{% for vrf in vrf_vars %}
-vrf definition {{vrf.vrf_name}} #Must use loop element vrf.key_name 
+{# Use the vrf_vars from Python dictionary vrf_jinja = {"vrf_vars": vrf_list} #}
+{%- for vrf in vrf_vars -%}
+
+{# Each Jinja variable must have an element 'vrf' because it's in the loop #}
+vrf definition {{vrf.vrf_name}}
  rd {{vrf.rd_number}}
  !
  {%- if vrf.ipv4_enabled %}

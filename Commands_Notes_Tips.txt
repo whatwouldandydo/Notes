@@ -137,10 +137,44 @@ interface Gig0/1/{{ port }}
 {%- endfor %}
 '''How to use the for loop in Jinja2. The {%-} means remove the spacing in front or {-%} remove spacing after, to make the print pretty.'''
 
-{% for route in advertised_routes -%}
-network {{route}}
-{%- endfor %}
-'''How to use the for loop in Jinja2. For loop must be in the Jinja2 file (nxos_bgp_template.j2).
+----------------- For loop with If statement -----------------
+vrf_template = """
+{% for vrf in vrf_vars %}
+vrf definition {{vrf.vrf_name}} #Must use loop element vrf.key_name 
+ rd {{vrf.rd_number}}
+ !
+ {%- if vrf.ipv4_enabled %}
+ address-family ipv4
+  route-target export {{vrf.rd_number}}
+  route-target import {{vrf.rd_number}}
+ exit-address-family
+ {%- endif %}
+ {%- if vrf.ipv6_enabled %}
+ !
+ address-family ipv6
+  route-target export {{vrf.rd_number}}
+  route-target import {{vrf.rd_number}}
+ exit-address-family
+ {%- endif %}
+{% endfor %}
+"""
+
+blue1 = {
+    "vrf_name": "blue1",
+    "rd_number": "100:1",
+    "ipv4_enabled": True,
+    "ipv6_enabled": True
+}
+blue2 = {
+    "vrf_name": "blue2",
+    "rd_number": "100:1",
+    "ipv4_enabled": True,
+    "ipv6_enabled": True
+}
+vrf_list = [blue1, blue2]
+
+# In vrf_template, use the key name vrf_vars as loop {% for vrf in vrf_vars %}
+vrf_jinja = {"vrf_vars": vrf_list}
 
 ----------------- Jinja2 Environment -----------------
 """Use FileSystemLoader to specify where you want to load the template file."""

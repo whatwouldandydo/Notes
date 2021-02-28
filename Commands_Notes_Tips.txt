@@ -497,3 +497,62 @@ EOF
 #Run TestFSM script
 # textfsm.py <your_template_file> <your_output_text_file>
 textfsm.py show_ip_int_brief.template show_ip_int_brief.txt
+
+################## Arista eAPI ##################
+pip list | grep pyeapi
+
+import pyeapi
+pyeapi.__version__
+
+connection = pyeapi.client.connect(
+    tranport = "https",
+    host = "device_name_ip",
+    username = "USERNAME",
+    password = getpass(),
+    port = "443",
+)
+
+device = pyeapi.client.Node(connection)
+show_cmds = device.enable(["show ip apr", "show version"])
+print(show_cmds)
+#show_cmds[0] = show ip arp output
+#show_cmds[1] = show version output
+
+cfg_cmds = ["vlan 100", "name OneH", "vlan 200", "name TwoH"]
+cfg_output = device.config(cfg_cmds)
+print(cfg_output)
+#[{}, {}, {}, {}] = config succeeded. A list with 4 empty dict because there were 4 commands applied
+----------------------------------------------------
+nano ~/.eapi.config
+"""You can create .eapi.conf file to store the devices for pyeapi to connect to"""
+[connection:arista8]
+host: arista8.lab
+username: USERNAME
+password: PASSWORD
+tranport: https
+
+[DEFAULT] # Make username, password, tranport as global for all in eapi.conf
+username: USERNAME
+password: PASSWORD
+tranport: https
+
+
+import pyeapi
+device1 = pyeapi.connect_to("arista8) #You have to remember where eapi.conf located
+print(device1)
+
+
+################## Using iPython Debugger (ipdb) ##################
+import ipdb
+
+ipdb.set_strace()
+"""Put it on top of the code to set the starting of the debugger"""
+
+Debugger Option/Command:
+n = next
+p = print (p device)
+pp = pprint (pp device)
+dir(device) = To view all the available objects in connection
+!device.model = Executing command device.model inside the debugger
+!device.version
+!help(device.version)

@@ -499,6 +499,61 @@ EOF
 textfsm.py show_ip_int_brief.template show_ip_int_brief.txt
 
 ################## Arista eAPI ##################
+# Using low level code to connect to eAPI
+
+import requests
+import json
+from getpass import getpass
+from urllib3.exceptions import InsecureRequestWarning #Disable the SSL warning of self-signed cert
+from pprint import pprint
+
+#Disable the SSL warning of self-signed cert
+requests.pacages.urllib3.disable_warnings(category=InsecureRequestWarning)
+
+if __name__ = "__main__":
+
+    http_headers = {Content-Type": "application/json-rpc;"}
+    host = "arista8.lab"
+    port = 443
+    username = USERNAME
+    password = getpass()
+
+    url = f"https://{host}:{port}/command-api"
+
+    cmds = [
+        "disable", #Get me out of enable mode
+        {"cmd": "enable", "input": ""}, #Enable security and no enable password
+        "config terminal",
+        "vlan 222",
+        "name TTT",
+    ]
+
+    json_payload = {
+        "jsonrpc": "2.0",
+        "method": "runCmds",
+        "params": {"version":1, "cmds": cmds, "format": "json"},
+        "id": "1",
+    }
+    json_data = json.dumps(json_payload) #Convert the json_payload as string
+    http_headers["Content-lenght"] = str(len(json_data)) #Define how long is the content length
+
+    # Make request or post to the Arista API
+    req = requests.post(
+        url,
+        headers=http_headers,
+        auth=(username, password),
+        data=json_data,
+        verify=False, #Don't care if this a self-signed cert
+    )
+
+    # Get a respond back from the API
+    response = req.json()
+    pprint(response)
+    #[{}, {}, {}, {}, {}] = config succeeded. A list with 5 empty dict because there were 5 commands applied
+
+----------------------------------------------------
+# Using pyeapi module
+
 pip list | grep pyeapi
 
 import pyeapi
@@ -522,6 +577,7 @@ cfg_cmds = ["vlan 100", "name OneH", "vlan 200", "name TwoH"]
 cfg_output = device.config(cfg_cmds)
 print(cfg_output)
 #[{}, {}, {}, {}] = config succeeded. A list with 4 empty dict because there were 4 commands applied
+
 ----------------------------------------------------
 nano ~/.eapi.config
 """You can create .eapi.conf file to store the devices for pyeapi to connect to"""

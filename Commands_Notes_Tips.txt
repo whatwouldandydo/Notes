@@ -573,6 +573,7 @@ print(show_cmds)
 #show_cmds[0] = show ip arp output
 #show_cmds[1] = show version output
 
+# Configure Device using pyeapi
 cfg_cmds = ["vlan 100", "name OneH", "vlan 200", "name TwoH"]
 cfg_output = device.config(cfg_cmds)
 print(cfg_output)
@@ -596,7 +597,6 @@ tranport: https
 import pyeapi
 device1 = pyeapi.connect_to("arista8) #You have to remember where eapi.conf located
 print(device1)
-
 
 ################## Using iPython Debugger (ipdb) ##################
 import ipdb

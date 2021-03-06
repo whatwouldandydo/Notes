@@ -612,3 +612,23 @@ dir(device) = To view all the available objects in connection
 !device.model = Executing command device.model inside the debugger
 !device.version
 !help(device.version)
+
+################## Using XML and NX-API  ##################
+Root Node
+Child Nodes - Child Nodes can only have 1 Parent Node
+Sibling Nodes - Child nodes that have the same Paranet node
+Ancestor Node - Root Node
+
+ElementTree/lxml
+* Element Nodes - Tag names in the XML e.g. <tag_1> <tag_1-1> </tag_1-1> </tag_1>
+* Text Nodes - Treat text as an attribute of the Element Node e.g. <hardware>Text_Cisco</hardware>
+* Attribute Nodes - Treat the attribute as an attribute of the Element Node e.g. <contract>fake_attribute=yes</contract>
+
+import xmltodict
+xmldata = xmlfile.read().strip()
+my_xml = xmltodict.parse(xmldata)
+"""xmltodict libary converts XML to an ordered Python dictionary OrderedDict()."""
+"""When XML Element Node names are the same, Python returns a list with the text elements inside it."""
+
+my_xml = xmltodict(xmldata, force_list={"Key_Name": True})
+"""Force Python to return a list with 1 element inside it."""

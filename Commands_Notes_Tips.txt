@@ -632,3 +632,28 @@ my_xml = xmltodict.parse(xmldata)
 
 my_xml = xmltodict(xmldata, force_list={"Key_Name": True})
 """Force Python to return a list with 1 element inside it."""
+
+import xml.ElementTree.etree as etree
+"""Use to read xml with decode and encode"""
+
+import lxml import etree
+"""Same as xml Use to read xml with decode and encode but works with NALPAM"""
+
+# Convert string to XML
+my_xml = etree.fromstring("xmlfile")
+
+# Convert XML to string
+my_xml = etree.tostring("xmlfile")
+
+# Print out all the tag names
+my_xml.tag
+
+# Print out the text associated with the tag
+my_xml.text
+
+# Only find the tag name connected directly the Root tree. Won't find deeper from the tree.
+my_xml.find("Tag Name")
+
+# Find the tag name deeper in the tree using .//
+my_xml.findall(".//Tag Name")
+my_xml.findall(".//Tag Name").text #Give the the text of that tag

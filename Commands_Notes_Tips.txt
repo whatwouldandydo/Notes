@@ -658,9 +658,7 @@ my_xml.find("Tag Name")
 my_xml.findall(".//Tag Name")
 my_xml.findall(".//Tag Name").text #Give the the text of that tag
 
-
 XML Namespaces (nf) use to uniquely identify the element tag names to avoid overlap when working with large XML data. This causes a complexity when find() tag names.
-
 # XML Namespaces start with nf
 # xmlns="http://www.cisco.com/nsox:1.0:sysmgrcli is the default namespace
 <nf:rpc-reply rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nsox:1.0:sysmgrcli">
@@ -679,3 +677,42 @@ my_xml.find("{*}/data")
 # Find a child tag name from namespaces
 my_xml.find(".//{*}version")
 
+
+# Use NX-API Json-rpc
+import nxapi_plumbing
+
+device = nxapi_plumbing.Device(
+    api_format="jsonrpc",
+    host="lab1.dns.com",
+    username="USERNAME",
+    password=getpass(),
+    transport="https",
+    port=8443,
+    verify=False, #Disable self-signed error
+)
+
+cmds = ["show ip route", "show ip arp"]
+output = device.show("show version") #Return structured data
+output = device.show_list(cmds) #Use show_list() methods for multiple commands
+output = device.show_list(cmds, raw_text=True) #Use cli_ascii for Post and return data as 1 string
+output = device.checkpoint(filename="router1.txt") #Create a snapshot of the device for rollback
+output = device.config_list(cmds) #Config the device via API
+
+# Use NX-API XML
+import nxapi_plumbing
+from lxml import etree
+
+device = nxapi_plumbing.Device(
+    api_format="xml",
+    host="lab1.dns.com",
+    username="USERNAME",
+    password=getpass(),
+    transport="https",
+    port=8443,
+    verify=False, #Disable self-signed error
+)
+
+output = device.show("show version")
+print(output.tostring(output).decode()) #Need to convert the xml from byte to string
+output = device.show("show version", raw_text=True) #Use ascii command and return 1 big result
+output = device.config_list(cmds) #Config the device via API

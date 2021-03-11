@@ -643,7 +643,7 @@ import lxml import etree
 my_xml = etree.fromstring("xmlfile")
 
 # Convert XML to string
-my_xml = etree.tostring("xmlfile")
+my_xml = etree.tostring("xmlfile", encoding="unicode")
 
 # Print out all the tag names
 my_xml.tag
@@ -654,9 +654,13 @@ my_xml.text
 # Only find the tag name connected directly the Root tree. Won't find deeper from the tree.
 my_xml.find("Tag Name")
 
-# Find the tag name deeper in the tree using .//
+# Find the first tag name in the tree using ./
+my_xml.find("./Tag Name")
+
+# Find all occurrences of the tag name .//
+# .tag and .text won't work with findall() method
 my_xml.findall(".//Tag Name")
-my_xml.findall(".//Tag Name").text #Give the the text of that tag
+my_xml.findall(".//Tag Name")
 
 XML Namespaces (nf) use to uniquely identify the element tag names to avoid overlap when working with large XML data. This causes a complexity when find() tag names.
 # XML Namespaces start with nf

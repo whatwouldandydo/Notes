@@ -660,7 +660,6 @@ my_xml.find("./Tag Name")
 # Find all occurrences of the tag name .//
 # .tag and .text won't work with findall() method
 my_xml.findall(".//Tag Name")
-my_xml.findall(".//Tag Name")
 
 XML Namespaces (nf) use to uniquely identify the element tag names to avoid overlap when working with large XML data. This causes a complexity when find() tag names.
 # XML Namespaces start with nf

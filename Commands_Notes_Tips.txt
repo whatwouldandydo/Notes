@@ -504,10 +504,10 @@ textfsm.py show_ip_int_brief.template show_ip_int_brief.txt
 import requests
 import json
 from getpass import getpass
-from urllib3.exceptions import InsecureRequestWarning #Disable the SSL warning of self-signed cert
 from pprint import pprint
 
 #Disable the SSL warning of self-signed cert
+from urllib3.exceptions import InsecureRequestWarning
 requests.pacages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 if __name__ = "__main__":
@@ -662,8 +662,9 @@ my_xml.find("./Tag Name")
 my_xml.findall(".//Tag Name")
 
 XML Namespaces (nf) use to uniquely identify the element tag names to avoid overlap when working with large XML data. This causes a complexity when find() tag names.
-# XML Namespaces start with nf
-# xmlns="http://www.cisco.com/nsox:1.0:sysmgrcli is the default namespace
+## The file begins <?xml version="1.0" encoding="ISO-8859-1"?> and needs to open as "rb" binary
+## XML Namespaces start with nf
+## xmlns="http://www.cisco.com/nsox:1.0:sysmgrcli is the default namespace
 <nf:rpc-reply rpc-reply xmlns:nf="urn:ietf:params:xml:ns:netconf:base:1.0" xmlns="http://www.cisco.com/nsox:1.0:sysmgrcli">
  <nf:data>
   <show>
@@ -684,7 +685,7 @@ my_xml.find(".//{*}version")
 # Use NX-API Json-rpc
 import nxapi_plumbing
 
-device = nxapi_plumbing.Device(
+net_connect = nxapi_plumbing.Device(
     api_format="jsonrpc",
     host="lab1.dns.com",
     username="USERNAME",
@@ -695,17 +696,18 @@ device = nxapi_plumbing.Device(
 )
 
 cmds = ["show ip route", "show ip arp"]
-output = device.show("show version") #Return structured data
-output = device.show_list(cmds) #Use show_list() methods for multiple commands
-output = device.show_list(cmds, raw_text=True) #Use cli_ascii for Post and return data as 1 string
-output = device.checkpoint(filename="router1.txt") #Create a snapshot of the device for rollback
-output = device.config_list(cmds) #Config the device via API
+output = net_connect.show("show version") #Return structured data
+output = net_connect.show_list(cmds) #Use show_list() methods for multiple commands
+output = net_connect.show_list(cmds, raw_text=True) #Use cli_ascii for Post and return data as 1 string
+output = net_connect.checkpoint(filename="router1.txt") #Create a snapshot of the device for rollback
+output = net_connect.config_list(cmds) #Config the device via API
 
-# Use NX-API XML
+## Use NX-API XML
+## Need to use loop to get the output from XML format
 import nxapi_plumbing
 from lxml import etree
 
-device = nxapi_plumbing.Device(
+net_connect = nxapi_plumbing.Device(
     api_format="xml",
     host="lab1.dns.com",
     username="USERNAME",
@@ -715,7 +717,40 @@ device = nxapi_plumbing.Device(
     verify=False, #Disable self-signed error
 )
 
-output = device.show("show version")
-print(output.tostring(output).decode()) #Need to convert the xml from byte to string
-output = device.show("show version", raw_text=True) #Use ascii command and return 1 big result
-output = device.config_list(cmds) #Config the device via API
+# Print "Interface: Ethernet1/1; State: up; MTU: 1500"
+show_interface_eth1_1 = net_connect.show("show interface eth1/1")
+interface = show_interface_eth1_1.find(".//{*}interface")
+admin_state = show_interface_eth1_1.find(".//{*}admin_state")
+mtu = show_interface_eth1_1.find(".//{*}eth_mtu")
+print(f"Interface: {interface.text}; State: {admin_state.text}; MTU: {mtu.text}")
+print()
+
+# Print each show command from show_list()
+cmds = ["show system uptime", "show system resources"]
+show_systems = net_connect.show_list(cmds)
+
+for output in show_systems:
+    output = etree.tostring(output, encoding="unicode")
+    print("*" * 40)
+    print(output)
+    print("*" * 40)
+
+# Get code 200 from each configured command
+cfg_cmds = [
+    "interface loopback111",
+    "description nxapi_plumbing config 1",
+    "no shut",
+    "interface loopback222",
+    "description nxapi_plumbing config 2",
+    "no shut",
+]
+
+cfg_output = net_connect.config_list(cfg_cmds)
+
+for cli in cfg_output:
+    # print(cli) # <Element output at 0x7f87a31767d0>
+    # print(cli.tag) # output
+    # print(cli.text) # blank 
+    cli = etree.tostring(cli, encoding="unicode")
+    print(cli) # <code>200</code>
+    print("-" * 40)

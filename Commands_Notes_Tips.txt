@@ -675,6 +675,27 @@ XML Namespaces (nf) use to uniquely identify the element tag names to avoid over
  </nf:data>
 </nf:rpc-reply>
 
+def load_xml_file(filename):
+    # The file begins <?xml version="1.0" encoding="ISO-8859-1"?>
+    # and needs to open as binary
+    with open(filename, "rb") as f:
+        xml_file = f.read().strip()
+        return etree.fromstring(xml_file)
+
+if __name__ == "__main__":
+
+    filename = "show_version.xml"
+    show_version = load_xml_file(filename)
+    print(show_version) # <Element {urn:ietf:params:xml:ns:netconf:base:1.0}rpc-reply at 0x7f701b5e2230>
+
+    a = show_version.nsmap
+    print(a) # {'nf': 'urn:ietf:params:xml:ns:netconf:base:1.0', None: 'http://www.cisco.com/nxos:1.0:sysmgrcli'}
+
+    b = show_version.find(".//{*}proc_board_id")
+    print(b) # <Element {http://www.cisco.com/nxos:1.0:sysmgrcli}proc_board_id at 0x7f5c34e7c2d0>
+    print(b.tag) # {http://www.cisco.com/nxos:1.0:sysmgrcli}proc_board_id
+    print(b.text) # TM60363221B
+    
 # Find a namespace tag name
 my_xml.find("{*}/data")
 

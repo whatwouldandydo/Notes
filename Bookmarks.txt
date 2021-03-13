@@ -1,3 +1,5 @@
 # API for BGP view of ASN, Prefixes, Peers, Upstreams, Downstreams and many more ...
 https://api.bgpview.io/
 
+# Network Throughput Calculator
+https://wintelguy.com/wanperf.pl

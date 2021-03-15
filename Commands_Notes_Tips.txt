@@ -1,4 +1,4 @@
-################## How to Handle Complex Data Structures ##################
+*********************** How to Handle Complex Data Structures ***********************
 Peeling the data back layer by layer from the outer to the inner.
 
 Is it a List or a Dictionary? Use type() to identify the data type.
@@ -25,7 +25,7 @@ Dictionary:
             print(val_name["nested_key_name"])
             break
 
-################## Tips to use Python Netmiko ##################
+*********************** Tips to use Python Netmiko ***********************
 ipython -i test.py
 '''Use ipython to run the Python file to get interactive mode such as dir(), help(), print() in the code itself.'''
 
@@ -100,7 +100,7 @@ device1 = {
 }
 """You can use SSH or RSA keys for user authentication."""
 
-################## Jinja2 ##################
+*********************** Jinja2 ***********************
 Data Structure Workflow: Variables (CSV, text) > Configuration Template > Output Files
 
 import jinja2
@@ -313,7 +313,7 @@ bgp_template = """
 """
 ------------------------------------------------
 
-################## YAML ##################
+*********************** YAML ***********************
 YAML file (.yml) starts with ---
 
 ---
@@ -360,7 +360,7 @@ with open(filename, "w") as f:
     output3 = yaml.dump(from_py_dict, f, default_flow_style=True)
 '''output1 will write to output.yml file as compress form. output2 will write as regular YAML format (easier to read). output3 will write as compress file like you would see in Python.'''
 
-################## JSON ##################
+*********************** JSON ***********************
 json.dumps(dict, indent)
 '''dumps method convert a Python object into a JSON string.'''
 
@@ -372,7 +372,7 @@ json.load() vs json.loads()
 
 Don't put comma , at the end of the JSON or it will generate error
 
-################## CiscoConfParse ##################
+*********************** CiscoConfParse ***********************
 from ciscoconfparse import CiscoConfParse
 '''From libary ciscoconfparse import class CiscoConfParse'''
 
@@ -404,7 +404,7 @@ dir(CiscoConfParse)
 help(CiscoConfParse.find_objects_w_child())
 """To see example commands and help options.""""
 
-################## Using Pip ##################
+*********************** Using Pip ***********************
 pip list
 pip3 list
 """List all the packages that you installed."""
@@ -417,7 +417,7 @@ pip install -r requirements.txt
 pip3 install -r requirements.txt
 """Install the pacages from the requirements.txt file."""
 
-################## Using Python sys.path ##################
+*********************** Using Python sys.path ***********************
 To find out where the Python libaries are imported from.
 
 import sys
@@ -435,7 +435,7 @@ env | grep PYTHON
 export PYTHONPATH=/home/newpath
 """How to set a new python path to /home/newpath."""
 
-################## Using TextFSM ##################
+*********************** Using TextFSM ***********************
 pip install textfsm
 pip install colorama
 """Install TextFSM package. Install Colorama for easier to read"""
@@ -498,7 +498,7 @@ EOF
 # textfsm.py <your_template_file> <your_output_text_file>
 textfsm.py show_ip_int_brief.template show_ip_int_brief.txt
 
-################## Arista eAPI ##################
+*********************** Arista eAPI ***********************
 # Using low level code to connect to eAPI
 
 import requests
@@ -598,7 +598,7 @@ import pyeapi
 device1 = pyeapi.connect_to("arista8) #You have to remember where eapi.conf located
 print(device1)
 
-################## Using iPython Debugger (ipdb) ##################
+*********************** Using iPython Debugger (ipdb) ***********************
 import ipdb
 
 ipdb.set_strace()
@@ -613,7 +613,7 @@ dir(device) = To view all the available objects in connection
 !device.version
 !help(device.version)
 
-################## Using XML and NX-API  ##################
+*********************** Using XML and NX-API  ***********************
 Root Node
 Child Nodes - Child Nodes can only have 1 Parent Node
 Sibling Nodes - Child nodes that have the same Paranet node
@@ -775,3 +775,75 @@ for cli in cfg_output:
     cli = etree.tostring(cli, encoding="unicode")
     print(cli) # <code>200</code>
     print("-" * 40)
+
+*********************** NETCONF and Juniper's PyEZ ***********************
+NETCONF Layer: Secure Transport > Messages > Operations > Content
+1. Secure Transport = SSH, TLS, (BEEP/TLS), (SOAP/HTTP/TLS)
+2. Messages = <rpc>, <rpc-reply>, <notification>
+3. Operations = <edit-config>
+4. Content = Configuration Data, Notification Data
+
+## Low level libary to use with NETCONFI
+ncclient
+
+## Juniper PyEZ libary to use with Juniper devices
+jnpr.junos
+from jnpr.junos import Devices
+
+a_device = Device.(host="lab1.dns", user="USERNAME", password="PASSWORD")
+a_device.open()
+
+## Use Ethernet Port table from the Juniper PyEZ
+from jnpr.junos.op.ethport import EthPortTable
+ports = EthPortTable(a_device)
+ports.get() #Returns a dictionary like object
+print(ports)
+print(ports.keys())
+print(ports.values())
+print(ports.items()) #Must use loop to see values in each key or use list line below
+list(ports["fe-0/0/1"].items()) #Use list when items() return data type <zip>
+
+## Use ARP Table from the Juniper PyEZ
+from jnpr.junos.op.arp import ArpTable
+arp_entries = ArpTable(a_device)
+arp_entries.get()
+
+## Use Config to push configuration
+from jnpr.junos.utils.config import Config
+a_device.timeout = 60 #Change default timeout to 60 seconds for commands take longer to finish
+cfg = Config(a_device) #Create a config object
+cfg.lock() #Same as Juniper "config exclusive"
+
+# format="set" is a set command. merge=True is a increament command. merge=False is a replace command
+cfg.load("set system host-name test123", format="set", merge=True)
+
+cfg.diff() #Same as Juniper "show | compare"
+cfg.commit() #Save the config
+cfg.rollback(0) #Rollback to 0
+
+# Config changes from a file. Format="text" is a text file. merge=False good for replace static routes
+cfg.lock()
+cfg.load(path="commands.conf", format="text", merge=False)
+
+# Config changes using XML format
+# Using Juniper command "show config | display xml" to view XML format
+cfg.lock()
+cfg.load(path="commands.xml", format="xml", merge=True)
+
+# Using commit confirm for auto rollback
+cfg.commit(confirm=1) #Commit confirm time in 1 minute
+
+# Overwrite the current running config with load config file commands.xml
+cfg.load(path="commands.xml", format="xml", overwrite=True)
+
+## Juniper PyEZ RPC 
+## Use Juniper command "display xml rpc" to see the RPC XML tag name. Replace - with _ in the naming convention.
+from jnpr.junos import Device
+from lxml import etree
+a_device.open()
+
+# show version | display xml rpc
+# <get-software-information> = get_software_information()
+xml_out = a_device.rpc.get_software_information()
+print(etree.tostring(xml_out, encoding="unicode"))
+

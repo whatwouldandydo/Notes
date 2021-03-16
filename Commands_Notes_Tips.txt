@@ -788,10 +788,13 @@ ncclient
 
 ## Juniper PyEZ libary to use with Juniper devices
 jnpr.junos
-from jnpr.junos import Devices
+from jnpr.junos import Device
 
-a_device = Device.(host="lab1.dns", user="USERNAME", password="PASSWORD")
+a_device = Device(host="lab1.dns", user="USERNAME", password="PASSWORD")
 a_device.open()
+print(a_device.hostname) # Device hostname
+print(a_device.port) # Device NETCONF port
+print(a_device.user) # Device username
 
 ## Use Ethernet Port table from the Juniper PyEZ
 from jnpr.junos.op.ethport import EthPortTable
@@ -807,6 +810,10 @@ list(ports["fe-0/0/1"].items()) #Use list when items() return data type <zip>
 from jnpr.junos.op.arp import ArpTable
 arp_entries = ArpTable(a_device)
 arp_entries.get()
+
+## Route Table from the Juniper PyEZ
+from jnpr.junos.op.routes import RouteTable
+
 
 ## Use Config to push configuration
 from jnpr.junos.utils.config import Config

@@ -854,3 +854,66 @@ a_device.open()
 xml_out = a_device.rpc.get_software_information()
 print(etree.tostring(xml_out, encoding="unicode"))
 
+*********************** NALPAM ***********************
+NALPAM's goal is to create a standard set of operations across a range of platforms.
+
+Operations fall into 2 general categories:
+(1) Config Operations
+device.get_config("running") #Get the running-config from the device
+
+(2) Getter Operations
+device.load_merge_candidate(filename="config.conf") # Replacing part of the configuration
+device.load_replace_candidate(filename="config.txt") # Replacing full configuration
+device.compare_config()
+device.discard_config()
+device.commit_config()
+device.rollback()
+
+Cisco NXOS (Archive) and IOS (enable ip scp) features to work with load_merge_candidate() or load_replace_candidate()
+
+# NALPAM Support for Platforms
+https://napalm.readthedocs.io/en/latest/support/
+
+# Cisco IOS (Netmiko connection object)
+napalm_conn.device
+<netmiko.cisco.cisco_ios.CiscoIosSSH object at 0x7fde2411d358>
+
+# Arista (pyeapi connection object)
+napalm_conn.device
+Node(connection=EapiConnection(transport=https://arista1.lasthop.io:443//command-api))
+
+# Juniper (PyEZ device object)
+type(napalm_conn.device)
+<class 'jnpr.junos.device.Device'>
+
+# Pip install and use NALPAM
+pip install napalm
+pip install napalm==2.4 # Install specific version of napalm
+
+from napalm import get_network_driver
+
+# New way to create cisco3 dictionary.
+# You can use cisco3 = {"hostname":"cisco3.com"} and it would work.
+cisco3 = dict(
+    hostname="cisco3.com",
+    device_type="ios",
+    username=input("Username: "),
+    password=getpass(),
+    optional_args={},
+)
+
+# Get the "ios" to new variable device_type = "ios"
+device_type = cisco3.pop("device_type")
+
+# Searhc in NALPAM for the IOSDriver class driver
+driver = get_network_driver(device_type)
+
+# Create a Cisco IOS instance for cisco3.
+# cisco3 dict no longer has device_type key because it was popped at device_type=cisco3.pop("device_type)
+device = driver(**cisco3)
+
+# Establish a connection to cisco3
+device.open()
+
+# Perform any operations (Getter or Config) you want 
+print(device.get_facts())

@@ -3,3 +3,6 @@ https://api.bgpview.io/
 
 # Network Throughput Calculator
 https://wintelguy.com/wanperf.pl
+
+# Spam Database Lookup
+https://www.dnsbl.info/

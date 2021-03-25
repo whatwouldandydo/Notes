@@ -893,14 +893,14 @@ pip install napalm==2.4 # Install specific version of napalm
 from napalm import get_network_driver
 
 # New way to create cisco3 dictionary.
-# You can use cisco3 = {"hostname":"cisco3.com"} and it would work.
-cisco3 = dict(
-    hostname="cisco3.com",
-    device_type="ios",
-    username=input("Username: "),
-    password=getpass(),
-    optional_args={},
-)
+cisco3 = {
+    "hostname": "cisco3.com",
+    # "platform": "nxos", # Cannot have platform and device_type keys are the same time
+    "device_type": "nxos",
+    "username": username,
+    "password": password,
+    "optional_args": {"port": 8443},
+}
 
 # Get the "ios" to new variable device_type = "ios"
 device_type = cisco3.pop("device_type")
@@ -917,3 +917,4 @@ device.open()
 
 # Perform any operations (Getter or Config) you want 
 print(device.get_facts())
+print(device.compare_config())

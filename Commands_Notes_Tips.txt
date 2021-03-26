@@ -869,8 +869,6 @@ device.discard_config()
 device.commit_config()
 device.rollback()
 
-Cisco NXOS (Archive) and IOS (enable ip scp) features to work with load_merge_candidate() or load_replace_candidate()
-
 # NALPAM Support for Platforms
 https://napalm.readthedocs.io/en/latest/support/
 
@@ -918,3 +916,19 @@ device.open()
 # Perform any operations (Getter or Config) you want 
 print(device.get_facts())
 print(device.compare_config())
+
+# Cisco NXOS (Archive) and IOS (enable ip scp) features to work with load_merge_candidate() or load_replace_candidate().
+# NXOS checkpoint _get_checkpoint_file() function requires saving the running-config to local file first then commit.
+
+if "nxos" in device.platform:
+    filename = f"{device.hostname}-checkpoint.txt"
+    backup = device._get_checkpoint_file()
+    with open(filename, "w") as f:
+        f.write(backup)
+    device.load_replace_candidate("nxos_replace_cfg.txt")
+    print(device.compare_config())
+    print(device.discard_config()) or device.commit()
+    print(device.compare_config())
+    device.close()
+else:
+    raise ValueError("Checkpoint requires NX-OS")

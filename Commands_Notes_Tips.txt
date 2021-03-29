@@ -932,3 +932,44 @@ if "nxos" in device.platform:
     device.close()
 else:
     raise ValueError("Checkpoint requires NX-OS")
+
+*********************** SSH and Concurrency ***********************
+Threads
+- Only one Python process is running on the machine
+- In that one process, there are many Threads. New threads can start while existing threads waiting for responses from the network devices (IO).
+
+Processes
+- Multiple Python processes are running on the machine. Depend on the CPUs.
+- Each Python process has one Thread
+
+# This is the legacy way of using Concurrency
+import Threading
+from multiprocessing import Process
+
+.start() to start the Thread or Process
+.join() means waiting for the last Thread or Process to complete
+
+# New way of using Concurrency. Must use Python version 3.2 or above.
+# This makes it easier to switch between Threading or Processing and sharing resources.
+from concurrent.futures import ThreadPoolExecutor, wait # For Threading. wait = join()
+from concurrent.futures import ProcessPoolExecutor, wait # For Process. wait = join()
+
+from netmiko import ConnectHandler
+def ssh_conn(device):
+    net_connect = ConnectHandler(**device)
+    return net_connect.find_prompt()
+
+max_threads = 4
+pool = ThreadPoolExecutor(max_threads)
+Thread_List = []
+for a_device in device_list:
+    # pool.sumbit = start the a child thread
+    future = pool.submit(ssh_conn, a_device)
+    Thread_List.append(future)
+
+# Same as join() operation wait for the last Thread or Process to finish.
+wait(Thread_List)
+
+for future in Thread_List:
+    print(future.result())
+    """Do something else"""

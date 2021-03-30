@@ -951,8 +951,8 @@ from multiprocessing import Process
 
 # New way of using Concurrency. Must use Python version 3.2 or above.
 # This makes it easier to switch between Threading or Processing and sharing resources.
-from concurrent.futures import ThreadPoolExecutor, wait # For Threading. wait = join()
-from concurrent.futures import ProcessPoolExecutor, wait # For Process. wait = join()
+from concurrent.futures import ThreadPoolExecutor, wait, as_completed
+from concurrent.futures import ProcessPoolExecutor, wait, as_completed
 
 from netmiko import ConnectHandler
 def ssh_conn(device):
@@ -969,7 +969,31 @@ for a_device in device_list:
 
 # Same as join() operation wait for the last Thread or Process to finish.
 wait(Thread_List)
-
 for future in Thread_List:
     print(future.result())
     """Do something else"""
+
+# as_completed means concurrent don't have to wait for all the threads to complete to begin Execute
+for future in as_completed(Thread_List):
+    print(future.result())
+
+# Clean up version of ThreadPool after its done 
+with ThreadPoolExecutor(max_threads) as pool:
+    Thread_List = []
+    for a_device in device_list:
+        future = pool.submit(ssh_conn, a_device)
+        Thread_List.append(future)
+
+    for future in as_completed(Thread_List):
+        print(future.result())
+        """Do something else"""
+
+# .map(ssh_conn, device_list) means take each element from the device_list,
+# and pass that element into the ssh_conn as an argument.
+# No longer need the for loop using .sumbit()
+with ThreadPoolExecutor(max_threads) as pool:
+        all_connections = pool.map(ssh_conn, a_device)
+
+    for future in as_completed(all_connections):
+        print(future.result())
+        """Do something else"""

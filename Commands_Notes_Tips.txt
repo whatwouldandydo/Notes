@@ -30,7 +30,9 @@ ipython -i test.py
 '''Use ipython to run the Python file to get interactive mode such as dir(), help(), print() in the code itself.'''
 
 from netmiko import Netmiko
+from netmiko import ConnectHandler
 '''From libary netmiko import class Netmiko'''
+'''Note, the ConnectHandler class is identical to the Netmiko class'''
 
 device_type="cisco_ios"
 '''device_type uses Vendor_OS_Transport. Example: "cisco_ios_serial" '''

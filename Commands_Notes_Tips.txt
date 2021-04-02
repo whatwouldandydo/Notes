@@ -945,21 +945,30 @@ Processes
 - Each Python process has one Thread
 
 # This is the legacy way of using Concurrency
-import Threading
+import threading
 from multiprocessing import Process
 
 .start() to start the Thread or Process
 .join() means waiting for the last Thread or Process to complete
 
-# New way of using Concurrency. Must use Python version 3.2 or above.
-# This makes it easier to switch between Threading or Processing and sharing resources.
-from concurrent.futures import ThreadPoolExecutor, wait, as_completed
-from concurrent.futures import ProcessPoolExecutor, wait, as_completed
-
 from netmiko import ConnectHandler
 def ssh_conn(device):
     net_connect = ConnectHandler(**device)
     return net_connect.find_prompt()
+    
+threads = []
+for device in device_list:
+    th = threading.Thread(target=ssh_conn, args=(device, "show version"))
+    threads.append(th)
+    th.start()
+
+for t in threads:
+    t.join()
+
+# New way of using Concurrency. Must use Python version 3.2 or above.
+# This makes it easier to switch between Threading or Processing and sharing resources.
+from concurrent.futures import ThreadPoolExecutor, wait, as_completed
+from concurrent.futures import ProcessPoolExecutor, wait, as_completed
 
 max_threads = 4
 pool = ThreadPoolExecutor(max_threads)

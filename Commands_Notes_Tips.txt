@@ -1002,6 +1002,13 @@ with ThreadPoolExecutor(max_threads) as pool:
 # .map(ssh_conn, device_list) means take each element from the device_list,
 # and pass that element into the ssh_conn as an argument.
 # No longer need the for loop using .sumbit()
+with ThreadPoolExecutor(max_threads) as pool:
+        all_connections = pool.map(ssh_conn, a_device, cmd_list)
+
+    for future in all_connections:
+        print(future.result())
+        """Do something else"""
+
 cmd_list = ["show ip arp", "show version"]
 with ThreadPoolExecutor(max_threads) as pool:
         all_connections = pool.map(ssh_conn, a_device, cmd_list)
@@ -1009,3 +1016,4 @@ with ThreadPoolExecutor(max_threads) as pool:
     for future in all_connections:
         print(future.result())
         """Do something else"""
+        

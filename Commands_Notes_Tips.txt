@@ -1017,3 +1017,35 @@ with ThreadPoolExecutor(max_threads) as pool:
         print(future.result())
         """Do something else"""
         
+*********************** REST API ***********************
+Use the "curl" command to view the API endpoint. Different Linux distro has different options for curl.
+
+curl --insecure
+"""Use the --insecure to workaround with self-sign https"""
+
+curl | jq
+"""Use | jq to return the get in JSON format"""
+
+## Use the Python requests libary to access REST API
+import requests
+
+# Disable self-sign SSL cert
+from urllib3.exceptions import InsecureRequestWarning
+requests.pacages.urllib3.disable_warnings(category=InsecureRequestWarning)
+
+url = "https://api.gethub.com"
+token = "32849dsfk234l"
+
+# Use POSTMAN browser add-on to find the correct header
+http_headers = {"accept": "application/json; version=2.4;"}
+if token:
+    http_headers["authorization"] = f"Token {token}"
+
+# verify=False means don't check the https cert
+response = requests.get(url, headers=http_headers, verify=False)
+response = response.json()
+print(response)
+
+requests.post() # Create new API object
+requests.put() # Modify existing API object. Use for loop to get the key name to modify.
+requests.delete() # Delete an API object

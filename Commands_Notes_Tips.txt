@@ -1031,7 +1031,7 @@ import requests
 
 # Disable self-sign SSL cert
 from urllib3.exceptions import InsecureRequestWarning
-requests.pacages.urllib3.disable_warnings(category=InsecureRequestWarning)
+requests.packages.urllib3.disable_warnings(category=InsecureRequestWarning)
 
 url = "https://api.gethub.com"
 token = "32849dsfk234l"

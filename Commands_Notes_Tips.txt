@@ -1046,6 +1046,13 @@ response = requests.get(url, headers=http_headers, verify=False)
 response = response.json()
 print(response)
 
-requests.post() # Create new API object
-requests.put() # Modify existing API object. Use for loop to get the key name to modify.
-requests.delete() # Delete an API object
+payload = {"address": "192.0.2.101/32"}
+
+# Create new API object
+requests.post(api_url, headers=http_headers, verify=False, data=json.dumps(payload))
+
+# Modify existing API object. Use for loop to get the key name to modify.
+requests.put(api_url, headers=http_headers, verify=False, data=json.dumps(payload))
+
+# Delete an API object. response.status_code = 204
+requests.delete(api_url, headers=http_headers, verify=False)

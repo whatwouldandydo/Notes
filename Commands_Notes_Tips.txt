@@ -1056,3 +1056,56 @@ requests.put(api_url, headers=http_headers, verify=False, data=json.dumps(payloa
 
 # Delete an API object. response.status_code = 204
 requests.delete(api_url, headers=http_headers, verify=False)
+
+*********************** Python Tools and Testing ***********************
+# Pylint - formatting style when writing code (I don't like it).
+pip install pylint
+pylint my_python_code.py # how to use pylint
+
+# pycodestyle = pep8- formatting style when writing code
+pip install pycodestyle
+pycodestyle my_python_code.py
+
+# PyFlakes - checking for errors or problems in your code
+
+# pylama - wraps multiple tools together
+# Use pycodestyle and PyFlakes
+pylama -o ../setup.cfg my_python_code.py
+
+# Python Black - auto formatter of your code. Search for Git repo python black.
+# Check all the Python in the current directory and what file would black change
+black --check . 
+
+# Black modify the code in the file
+black my_python_code.py
+diff my_python_code.py my_python_code2.py
+
+# pytest - test your code
+pip install pytest
+py.test -s -v test_python_code.py # Run pytest to test_python_code.py
+
+# @pytest.fixture reuses one SSH connection because each function ates a new SSH connection.
+import pytest
+
+@pytest.fixture(scope="module")
+def netmiko_conn():
+    net_connect = ConnectHandler(
+        host="sw1.com",
+        device_type="cisco_ios",
+        username=input("Username: "),
+        password=getpass(),
+    )
+
+    def fin():
+        net_connect.disconnect()
+
+    request.addfinalizer(fin)
+    # addfinalizer(fin) is a graceful teardown of SSH connection
+    
+    return net_connect
+
+def test_find_prompt(netmiko_conn): #
+    assert "sw1#" in netmiko_conn.find_prompt()
+
+def test_send_command(netmiko_conn):
+    output = netmiko_conn.send_command("show version")

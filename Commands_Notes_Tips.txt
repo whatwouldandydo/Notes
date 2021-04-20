@@ -1109,3 +1109,6 @@ def test_find_prompt(netmiko_conn): #
 
 def test_send_command(netmiko_conn):
     output = netmiko_conn.send_command("show version")
+
+# Use pytest with Travis CI (Continuous Integration)
+# Travis CI same as TeamCity

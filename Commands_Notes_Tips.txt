@@ -1141,7 +1141,6 @@ net.core.wmem_max = 212992
 net.ipv4.tcp_rmem = 4096    87380   6291456
 net.ipv4.tcp_wmem = 4096    16384   4194304
 
-
 RECEIVER
 Set Receive Buffer to 8MB:
 - sudo sysctl -w net.ipv4.tcp_rmem="4096    87380   8388608"
@@ -1154,6 +1153,6 @@ SENDER:
 Set Sender Buffer to 8MB:
 - sudo sysctl -w net.ipv4.tcp_wmem="4096    16384   8388608"
 - sudo sysctl -w net.core.wmem_max=16777216
-Set Sender Buffer to 8MB:
+Set Sender Buffer to 16MB:
 - sudo sysctl -w net.ipv4.tcp_wmem="4096    16384   16777216"
 - sudo sysctl -w net.core.wmem_max=33554432

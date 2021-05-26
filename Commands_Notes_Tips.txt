@@ -1114,16 +1114,16 @@ def test_send_command(netmiko_conn):
 # Travis CI same as TeamCity
 
 *********************** TCP/IP Tuning (iPerf) ***********************
-TCP Window - the maximum of 65,535 or 64KBytes of data allow to be send to receiver's received buffer. This causes bandwith waste because of overhead Acknowledgement of every 44 packets. My cable speed is 100Mbits/sec with 10ms delay. I only use 5.2Mbits/sec when TCP window is 65535.
-- 65535 / 1460 MSS = 44 packets to fill the receiver's buffer
+TCP Window - the maximum of 65,535 or 64KBytes of data allow to be send to receiver's received buffer. This causes bandwith waste because of the sender can only send 44 packets to the receiver per second. My cable speed is 100Mbits/sec with 10ms delay. I only use 5.2Mbits/sec when TCP window is 65535.
+- 65535 / 1460 MSS = 44 packets per second or the receiver's buffer is full
 - 65535 * 8 / 0.01 = 5,242bits/sec or 5.2Mb
 
 Window Scaling - best use in the long fat network with high delay such as cable, DSL, fiber, satellite. Because it multiplies the TCP Window with Scaling Factor. Scaling Factor calculates as 2^n where n=14 (16,384) is the maximum.
-- 65535 * 2^7 / 1460 MSS = 5,745 packets to fill the receiver's buffer
+- 65535 * 2^7 / 1460 MSS = 5,745 packets per second or the receiver's buffer is full
 - 8,388,480 * 8 / 0.01 = 6,710,784,000 bits/sec or 6.7Gb. This won't happen because the TCP/IP stack will use smaller TCP Window and Scaling Factor for the receiver's buffer to bring the value below 100Mbits/sec.
 
 1. Use iPerf UDP test to determine the true speed
-1.2. iperf -b1.0G #-b1.0G = bandwith 1Gb
+1.2. iperf -b1.0G #-b1.0G = bandwith 1Gbits
 
 2. Calculate Bandwidth Delay Product (BDP)
 2.2. Bandwidth Delay Product in Bytes = Bandwidth(bit) / 8 * RTT(Round Trip Time)
@@ -1142,23 +1142,23 @@ Window Scaling - best use in the long fat network with high delay such as cable,
 rmem_max is the maximum receive socket buffer size in bytes.
 net.ipv4.tcp_rmem = min default max
 - min = 4K
-- default = 87380
-- max = doesn't override net.core.rmem_max
+- default = 87380 or 65535 with tcp_adv_win_scale and tcp_app_win:0
+- max = default between 87380 and 6MB. Doesn't override net.core.rmem_max and net.core.rmem_max needs configured manually.
 - net.core.rmem_max multiplies by 2 whatever net.ipv4.tcp_rmem max value
 
 wmem_max is the maximum send socket buffer size in bytes.
 net.ipv4.tcp_wmem = min default max
 - min = 4K
-- default = 16384
-- max = doesn't override net.core.wmem_max
+- default = 16384. This value overrides net.core.wmem_default used by other protocols. Usually lower than net.core.wmem_default
+- max = default between 64KB and 4MB. Doesn't override net.core.wmem_max
 - net.core.wmem_max multiplies by 2 whatever net.ipv4.tcp_wmem max value
+
+https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
+tcp_rmem = net.ipv4.tcp_rmem
+tcp_wmem = net.ipv4.tcp_wmem
 
 # Capture the current sysctl settings for rollback
 ubuntu@~$ sudo sysctl -a | egrep "[wr]mem" | egrep "core|tcp"
-sysctl: reading key "net.ipv6.conf.all.stable_secret"
-sysctl: reading key "net.ipv6.conf.default.stable_secret"
-sysctl: reading key "net.ipv6.conf.ens3.stable_secret"
-sysctl: reading key "net.ipv6.conf.lo.stable_secret"
 net.core.rmem_default = 212992
 net.core.rmem_max = 212992
 net.core.wmem_default = 212992
@@ -1167,17 +1167,17 @@ net.ipv4.tcp_rmem = 4096    87380   6291456
 net.ipv4.tcp_wmem = 4096    16384   4194304
 
 RECEIVER
-Set Receive Buffer to 8MB:
+Config Receive Buffer to 8MB:
 - sudo sysctl -w net.ipv4.tcp_rmem="4096    87380   8388608"
 - sudo sysctl -w net.core.rmem_max=16777216
-Set Receive Buffer to 16MB:
+Config Receive Buffer to 16MB:
 - sudo sysctl -w net.ipv4.tcp_rmem="4096    87380   16777216"
 - sudo sysctl -w net.core.rmem_max=33554432
 
 SENDER:
-Set Sender Buffer to 8MB:
+Config Sender Buffer to 8MB:
 - sudo sysctl -w net.ipv4.tcp_wmem="4096    16384   8388608"
 - sudo sysctl -w net.core.wmem_max=16777216
-Set Sender Buffer to 16MB:
+Config Sender Buffer to 16MB:
 - sudo sysctl -w net.ipv4.tcp_wmem="4096    16384   16777216"
 - sudo sysctl -w net.core.wmem_max=33554432

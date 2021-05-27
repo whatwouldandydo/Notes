@@ -1157,6 +1157,15 @@ https://www.kernel.org/doc/Documentation/networking/ip-sysctl.txt
 tcp_rmem = net.ipv4.tcp_rmem
 tcp_wmem = net.ipv4.tcp_wmem
 
+https://www.ateam-oracle.com/tcpip-tuning
+* net.core.rmem_default - Default memory size of receive(rx) buffers used by sockets for ALL protocols. Value is in bytes.
+* net.core.rmem_max - Maximum memory size of receive(rx) buffers used by sockets for ALL protocols. Value is in bytes.
+* net.core.wmem_default - Default memory size of send(tx) buffers used by sockets. Value is in bytes.
+* net.core.wmem_max - Maximum memory size of send(tx) buffers used by sockets. Value is in bytes.
+* net.ipv4.tcp_rmem - TCP specific setting for receive buffer sizes [min, default, max]. The max value can’t be larger than the equivalent net.core.rmem_max. Values are in bytes.
+* net.ipv4.tcp_wmem - TCP specific setting for send buffer sizes [min, default, max]. The max value can’t be larger than the equivalent net.core.wmem_max. Value are in bytes.
+* net.core.netdev_max_backlog - Incoming connections backlog queue is the number of packets queued when the interface receives packets faster than kernel can process them. Once this number is exceeded, the kernel will start to drop the packets.
+
 # Capture the current sysctl settings for rollback
 ubuntu@~$ sudo sysctl -a | egrep "[wr]mem" | egrep "core|tcp"
 net.core.rmem_default = 212992

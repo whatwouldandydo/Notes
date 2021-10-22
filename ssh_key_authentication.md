@@ -54,4 +54,10 @@ Example: Device A gives B its RSA public key. Device A accesses B via SSH and au
 
         clip < ~/.ssh/<rsa_key_name>.pub
 
+6. If there's GitHub permission error *permission denied (publickey)*, add these commands to `.bashrc` or `.bash_profile`.
+
+        eval $(ssh-agent -s)
+        ssh-add ~/.ssh/<rsa_key_name>
+
+
 #

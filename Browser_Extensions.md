@@ -11,5 +11,6 @@
 4. Video DownloadHelper
 5. RESTClient
 6. DuckDuckGo Privacy Essentials
+7. 
 
 # Microsoft Edge

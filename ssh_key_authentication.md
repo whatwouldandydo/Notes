@@ -32,4 +32,26 @@ Example: Device A gives B its RSA public key. Device A accesses B via SSH and au
 
 </br>
 
-## Remote SSH and Visual Code Tool
+#
+
+## Visual Code and GitHub SSH Key Authencation
+
+1. Install git tool. For Windows, install `Git Bash`. For Linux, `apt-get git`.
+
+2. On local machine, generate a RSA key. Use email and naming convention when dealing with multiple remote devices and RSAs.
+
+        ssh-keygen -t rsa -b 4096 -C "user@email.com" -f Users/<Name>/.ssh/<rsa_key_name>
+
+3. On local machine, start the SSH Agent.
+
+        eval $(ssh-agent -s)
+
+4. On local machine, add the SSH private key.
+
+        ssh-add ~/.ssh/<rsa_key_name>
+
+5. Copy the local machine public key and add it to GitHub > Settings > SSH and GPG keys
+
+        clip < ~/.ssh/<rsa_key_name>.pub
+
+#

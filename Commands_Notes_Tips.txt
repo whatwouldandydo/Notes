@@ -1190,3 +1190,12 @@ Config Sender Buffer to 8MB:
 Config Sender Buffer to 16MB:
 - sudo sysctl -w net.ipv4.tcp_wmem="4096    16384   16777216"
 - sudo sysctl -w net.core.wmem_max=33554432
+
+*********************** Using Environment Variables ***********************
+# Add export command to Linux or Mac .bashrc or .bash_profile
+export NET_USERNAME="admin"
+export NET_PASSWORD="password"
+
+import os
+username = os.getenv("PY_USERNAME")
+password = os.getenv("PY_PASSWORD") if os.getenv("PY_PASSWORD") else getpass()

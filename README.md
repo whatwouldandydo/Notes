@@ -78,3 +78,33 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     Name: Morningstar, Inc.
     Country: US
     AS Number: AS400537
+
+## System Tools
+
+    Systems Tools > TCP Buffer
+    Please select an option.
+    0 - Quit
+    1 - Run System TCP Buffer Tuning
+    Option: 1
+
+
+        ==========================================================================
+        | WARNING: This works only on Linux, UNIX, and AIX systems. Run command  |
+        | below so you have a backup to restore the system to its original state.|
+        |                                                                        |
+        | sudo sysctl -a | egrep "[wr]mem" | egrep "core|tcp"                    |
+        |                                                                        |
+        ==========================================================================
+        
+    Enter Network Speed in Mbit/second: 45
+    Enter Network Latency in Millisecond: 22
+
+    ********************************************************************************
+    Recommended window size 123750 for 45.0 Mbps with 22.0 ms latency.
+    Commands to change system window sizes.
+    <No Change> means do not modify this value.
+
+    Line 1> sudo sysctl -w net.ipv4.tcp_wmem="<No Change> <No Change> 123750"
+    Line 2> sudo sysctl -w net.core.wmem_max=495000
+    Line 3> sudo sysctl -w net.ipv4.tcp_wmem="<No Change> <No Change> 123750"
+    Line 4> sudo sysctl -w net.core.wmem_max=495000

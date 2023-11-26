@@ -108,3 +108,21 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     Line 2> sudo sysctl -w net.core.wmem_max=495000
     Line 3> sudo sysctl -w net.ipv4.tcp_wmem="<No Change> <No Change> 123750"
     Line 4> sudo sysctl -w net.core.wmem_max=495000
+
+## Telecommunication Tools
+
+    Telecommunication > Phone Number Lookup
+    Please select an option.
+    0 - Quit
+    1 - Run Phone Number Lookup
+    Option: 1
+
+    Enter Phone Number (Example: 14158586273): 14158586273
+    ********************************************************************************
+    Internation Code: +1
+    Local Format: 4158586273
+    Country: United States of America
+    Location: Novato
+    Carrier Name: AT&T Mobility LLC
+    Line Type: mobile
+    ********************************************************************************

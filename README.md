@@ -1,8 +1,21 @@
 # Introduction
 
-I enjoy creating tools to automate manual tasks related to my interest in networks, systems, and finance.
+I enjoy creating tools to automate manual tasks related to my interest in engineering and finance.
 
-## Network Tools
+Below are the sample outputs of the tool that I built in my spare time.
+
+## 1. Network Tools
+#### Autonomous Systems, Internet Exchanges, and IP Subnet/Prefixes Information
+##### Storyline: I don't want to search multiple websites for the information.
+
+
+    Please select an option.
+    0 - Exit
+    1 - Network
+    2 - System
+    3 - Telecommunication
+    4 - Finance
+    Option: 1
 
     Network Tools > BGP View
     Please select an option.
@@ -12,29 +25,37 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     3 - Retrieve IPv4/IPv6 Prefix Information
     Option: 1
 
-    Enter AS Number: 1234
+    Enter AS Number: 7610
     ********************************************************************************
-    Retrieving AS1234's Information...
+    Retrieving AS7610's Information...
     ********************************************************************************
-    ASN: 1234
-    Name: Fortum
-    Location: EU
+    ASN: 7610
+    Name: NUS Gigapop
+    Location: SG
 
     IPv4 & IPv6 PREFIXES
-    ['1> 132.171.0.0/16', '2> 137.96.0.0/16', '3> 193.110.32.0/21']
+    ['1> 202.51.240.0/21', '2> 2402:400::/32']
 
     PEER AS : NAME : COUNTRY
-    ['1> AS1759 : Telia Finland Oyj : FI', '2> AS719 : Helsinki, Finland : FI']
+    ['1> AS7575 : Australian Academic and Research Network (AARNet) : AU',
+    '2> AS6939 : Hurricane Electric LLC : US',
+    '3> AS23855 : Singapore Advanced Research and Education Network : SG',
+    '4> AS4637 : Telstra Global : HK',
+    '5> AS3758 : SingNet : SG',
+    '6> AS7472 : NUS Information Technology : SG']
 
     UPSTREAM AS : NAME : COUNTRY
-    ['1> AS1759 : Telia Finland Oyj : FI', '2> AS719 : Helsinki, Finland : FI']
+    ['1> AS3758 : SingNet : SG', '2> AS4637 : Telstra Global : HK']
 
     DOWNSTREAM AS : NAME : COUNTRY
-    'No Data'
+    ['1> AS3758 : SingNet : SG', '2> AS4637 : Telstra Global : HK']
 
     IX-ID : NAME : COUNTRY : SPEED
-    'No Data'
+    ['1> IX-IX-60 : Singapore Open Exchange : SG : 10000',
+    '2> IX-IX-210 : Singapore Internet Exchange : SG : 10000']
 
+    ################################################################################
+    2 - Retrieve Internet Exchange (IX) Information
     Option: 2
 
     Enter Internet Exchange Number: 60
@@ -68,6 +89,8 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     '18> AS23855 : Singapore Advanced Research and Education Network : SG : 1000',
     '19> AS16509 : Amazon.com, Inc. : US : 20000']
 
+    ################################################################################
+    3 - Retrieve IPv4/IPv6 Prefix Information
     Option: 3
 
     Enter IPv4/IPv6 Subnet: 216.228.224.0/23
@@ -79,8 +102,18 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     Country: US
     AS Number: AS400537
 
-## System Tools
+## 2. System Tools
+#### Calculate and Change System Buffer Settings
+##### Storyline: The network got blamed too many times for slow file transfer.
 
+    Please select an option.
+    0 - Exit
+    1 - Network
+    2 - System
+    3 - Telecommunication
+    4 - Finance
+    Option: 2
+    
     Systems Tools > TCP Buffer
     Please select an option.
     0 - Quit
@@ -109,20 +142,30 @@ I enjoy creating tools to automate manual tasks related to my interest in networ
     Line 3> sudo sysctl -w net.ipv4.tcp_wmem="<No Change> <No Change> 123750"
     Line 4> sudo sysctl -w net.core.wmem_max=495000
 
-## Telecommunication Tools
+## 3. Telecommunication Tools
+#### Phone Number Lookup
+##### Storyline: I received too many calls from the “local real estate investors,” and I received too many texts from “beautiful ladies” with the U.S. phone numbers.
 
+    Please select an option.
+    0 - Exit
+    1 - Network
+    2 - System
+    3 - Telecommunication
+    4 - Finance
+    Option: 3
+    
     Telecommunication > Phone Number Lookup
     Please select an option.
     0 - Quit
     1 - Run Phone Number Lookup
     Option: 1
 
-    Enter Phone Number (Example: 14158586273): 14158586273
+    Enter Phone Number (Example: 14158586273): 12067058391
     ********************************************************************************
     Internation Code: +1
-    Local Format: 4158586273
+    Local Format: 2067058391
     Country: United States of America
-    Location: Novato
-    Carrier Name: AT&T Mobility LLC
-    Line Type: mobile
+    Location: Seattle
+    Carrier Name:
+    Line Type: landline
     ********************************************************************************

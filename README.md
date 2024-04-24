@@ -144,7 +144,7 @@ Below are the sample outputs of the tool that I built in my spare time.
 
 ## 3. Telecommunication Tools
 #### Phone Number Lookup
-##### Storyline: I received too many calls from the “local real estate investors,” and I received too many texts from “beautiful ladies” with the U.S. phone numbers.
+##### Storyline: I received too many texts from “beautiful ladies” and "investors." Andy can offer crypto investments too.
 
     Please select an option.
     0 - Exit
@@ -160,12 +160,14 @@ Below are the sample outputs of the tool that I built in my spare time.
     1 - Run Phone Number Lookup
     Option: 1
 
-    Enter Phone Number (Example: 14158586273): 12067058391
+    Enter Phone Number (Example: 14158586273): 14087406382
     ********************************************************************************
     Internation Code: +1
-    Local Format: 2067058391
+    Local Format: 4087406382
     Country: United States of America
-    Location: Seattle
+    Location: Saratoga
     Carrier Name:
     Line Type: landline
     ********************************************************************************
+
+![Andy offers crypto investments](/images/20240424_005044000_iOS.png)
